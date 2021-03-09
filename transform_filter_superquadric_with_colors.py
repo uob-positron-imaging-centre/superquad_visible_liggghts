@@ -4,18 +4,19 @@ def print_bug(msg,debug):
     if debug:
         print_bug(msg)
 debug = False
-input1 = self.GetInputDataObject(0, 0)
-input2 = self.GetInputDataObject(0, 1)
+input1 = self.GetInputDataObject(0, 0) # particle data from Liggghts
+input2 = self.GetInputDataObject(0, 1) # Superquadric
 output = self.GetOutputDataObject(0)
 newPoints = vtk.vtkPoints()
 newcells = vtk.vtkCellArray()
 #
 P=input1.GetPointData()
 B=input2.GetPointData()
-BODIES=input1.GetNumberOfPoints() #number of particles in vtk file
+BODIES=input1.GetNumberOfPoints()   #number of particles in vtk file
 EDGES=input2.GetNumberOfPoints()    #edges for the superquadric
 SURFACES=input2.GetNumberOfCells()  #surfaces of the superquadric
-# define the output (should set to vtkunstructuredgrid)
+# define the output
+# (should set to vtkunstructuredgrid)
 outputarrayID = vtk.vtkDoubleArray()
 outputarrayID.SetName("ID")
 outputarrayID.SetNumberOfTuples(BODIES*SURFACES)
@@ -23,11 +24,11 @@ outputarrayID.SetNumberOfTuples(BODIES*SURFACES)
 outputarrayT = vtk.vtkDoubleArray()
 outputarrayT.SetName("type")
 outputarrayT.SetNumberOfTuples(BODIES*SURFACES)
-#
+# Add a Array in the same manner if you want to visulize something different.
 #outputarraySC = vtk.vtkDoubleArray()
 #outputarraySC.SetName("value")
 #outputarraySC.SetNumberOfTuples(BODIES*SURFACES)
-#
+# Force output (you may not have a force data.)
 outputarrayF = vtk.vtkDoubleArray()
 outputarrayF.SetName("f")
 outputarrayF.SetNumberOfTuples(BODIES*SURFACES)
@@ -38,11 +39,11 @@ outputarray_v.SetNumberOfTuples(BODIES*SURFACES)
 k=0
 c=0
 print_bug(f"Number of particles: {BODIES}",debug)
-for body in range(0,BODIES): # for each particle
+#for loop over each particle
+for body in range(0,BODIES):
     r=input1.GetPoint(body)
     M=P.GetAbstractArray('TENSOR')
     T11=M.GetComponent(body,0)
-
     T12=M.GetComponent(body,1)
     T13=M.GetComponent(body,2)
     T21=M.GetComponent(body,3)
@@ -54,15 +55,20 @@ for body in range(0,BODIES): # for each particle
     type=P.GetArray('type').GetValue(body)-1
     CLUMP_ID=P.GetArray("id").GetValue(body);
     #CLUMP_SC=P.GetArray("value").GetValue(body);
+    # get force on body
     CLUMP_FORCEx=P.GetAbstractArray("f").GetComponent(body,0)
     CLUMP_FORCEy=P.GetAbstractArray("f").GetComponent(body,1)
     CLUMP_FORCEz=P.GetAbstractArray("f").GetComponent(body,2)
     CLUMP_FORCE=sqrt(CLUMP_FORCEx*CLUMP_FORCEx+CLUMP_FORCEy*CLUMP_FORCEy+CLUMP_FORCEz*CLUMP_FORCEz)
+    # get velocity of body
     CLUMP_VELx=P.GetAbstractArray("v").GetComponent(body,0)
     CLUMP_VELy=P.GetAbstractArray("v").GetComponent(body,1)
     CLUMP_VELz=P.GetAbstractArray("v").GetComponent(body,2)
     CLUMP_VEL=sqrt(CLUMP_VELx*CLUMP_VELx+CLUMP_VELy*CLUMP_VELy+CLUMP_VELz*CLUMP_VELz)
     print_bug(f"Number of Surfaces: {SURFACES}", debug)
+    # Loop over all surface of each Surface of the superquadric
+    # Instead of "saving" each particle positions and giving it
+    # a attribute (eg velocity) we save each surface and save each attribute
     for surface in range(0,SURFACES):
         outputarrayID.SetValue(k,CLUMP_ID)
         outputarrayT.SetValue(k,type)
@@ -86,14 +92,14 @@ for body in range(0,BODIES): # for each particle
             znew=T31*x+T32*y+T33*z+r[2]
             newPoints.InsertPoint(c, xnew, ynew, znew)
             c+=1
-        #print_bug("c after is : ",c)
-        #print_bug("c diff is : ",-c_old +c)
+        print_bug(f"c after is : {c}",debug)
+        print_bug(f"c diff is : {-c_old +c}",debug)
         newcells.InsertNextCell(6)
         newcells.InsertCellPoint(c-1)
         newcells.InsertCellPoint(c-2)
         newcells.InsertCellPoint(c-3)
         newcells.InsertCellPoint(c-4)
-        #print_bug("Surface number is: ",surface," Max Surface: ",SURFACES)
+        print_bug("Surface number is: {surface} Max Surface: {SURFACES}",debug)
         newcells.InsertCellPoint(c-5)
         newcells.InsertCellPoint(c-6)
 output.SetPoints(newPoints)
