@@ -26,7 +26,9 @@ use your normal simulation file. Change following lines:
 This makes a sphere with the radius RADIUS, change the Blockiness constants to get other shapes
  
 `fix     integr all nve/sphere`
+
 -->
+
 `fix		integr all nve/superquadric`
 
 
