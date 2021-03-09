@@ -45,4 +45,42 @@ This makes a sphere with the radius RADIUS, change the Blockiness constants to g
 
 `fix		integr all nve/superquadric`
 
+-----------------------------------------------------------
+
+for dumping use:
+
+`dump dmp2 all custom/vtk 2000 post/dump*.superq.vtk type mass x y z id vx vy vz fx fy fz omegax omegay omegaz radius shapex shapey shapez quat1 quat2 quat3 quat4 blockiness1 blockiness2 tqx tqy tqz angmomx angmomy angmomz`
+
+
+##Paraview Setup (Version 5.8)
+
+1. load dump*.superq.vtk
+2. Add Sources/Superquadric
+    - Center 0,0,0
+    - Theta Roundness is 2/blockiness1
+    - Phi Roundness is 2/blockiness2
+3. Add a transform filter to Superquardic
+    - rotate  in x axis by 90 (°)
+    - scale your particle to your particle size
+4. ctrl+ click on dump*.superq.vtk and Superquadric (first sump, than quadric)
+    - apply programmamble filter
+    - Output : vtkUnstructuredGrid
+    - Code: copy from  __transform_filter_superquadric_with_colors.py__
+5. Apply and enjoy
+
+
+
+## Credits
+User: 
+martin.kozakovic 
+and
+richti83
+
+on website www.cfdem.com
+
+
+
+## Sources:
+https://www.cfdem.com/forums/tutorial-4-superquadric-angle-repose-representation-python-filter
+
 
