@@ -52,13 +52,15 @@ for dumping use:
 `dump dmp2 all custom/vtk 2000 post/dump*.superq.vtk type mass x y z id vx vy vz fx fy fz omegax omegay omegaz radius shapex shapey shapez quat1 quat2 quat3 quat4 blockiness1 blockiness2 tqx tqy tqz angmomx angmomy angmomz`
 
 
-##Paraview Setup (Version 5.8)
+## Paraview Setup (Version 5.8)
 
-1. load dump*.superq.vtk
-2. Add Sources/Superquadric
+1. Load dump*.superq.vtk
+2. Add Sources --> Superquadric
     - Center 0,0,0
     - Theta Roundness is 2/blockiness1
     - Phi Roundness is 2/blockiness2
+    - untoggle Toroidal
+    ( blockiness1/2 correspond to the first and second value for blockiness in the particletemplate/superquadric command )
 3. Add a transform filter to Superquardic
     - rotate  in x axis by 90 (°)
     - scale your particle to your particle size
