@@ -34,9 +34,9 @@ use your normal simulation file. Change following lines:
 
 -->
 
-`fix pts1 all particletemplate/superquadric 15485863 atom_type 1 density constant 2500 shape constant ${RADIUS} ${RADIUS} ${RADIUS} blockiness constant 1.0 1.0`
+`fix pts1 all particletemplate/superquadric 15485863 atom_type 1 density constant 2500 shape constant ${RADIUS1} ${RADIUS2} ${RADIUS3} blockiness constant ${BLOCK1} ${BLOCK2}`
 
-This makes a sphere with the radius RADIUS, change the Blockiness constants to get other shapes
+ Play arround in parraview (next chapter) to find your desired shape
 
 -----------------------------------------------------------
 `fix     integr all nve/sphere`
@@ -57,14 +57,18 @@ for dumping use:
 1. Load dump*.superq.vtk
 2. Add Sources --> Superquadric
     - Center 0,0,0
-    - Theta Roundness is 2/blockiness1
-    - Phi Roundness is 2/blockiness2
+    - Theta Roundness is 2/${BLOCK1}
+    - Phi Roundness is 2/${BLOCK2}
     - untoggle Toroidal
     ( blockiness1/2 correspond to the first and second value for blockiness in the particletemplate/superquadric command )
 3. Add a transform filter to Superquardic
     - rotate  in x axis by 90 (°)
     - scale your particle to your particle size
-4. ctrl+ click on dump*.superq.vtk and Superquadric (first sump, than quadric)
+        - x scale is ${RADIUS1}
+        - y scale is ${RADIUS3}
+        - z scale is ${RADIUS2} 
+    - if you want to see the overall dimensions of your particle go to the "information" tab. (Bounds, delta for each dimension is the size in m (usually ))
+4. ctrl+ click on dump*.superq.vtk and Superquadric (first dump, than superquadric)
     - apply programmamble filter
     - Output : vtkUnstructuredGrid
     - Code: copy from  __transform_filter_superquadric_with_colors.py__
