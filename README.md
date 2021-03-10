@@ -60,7 +60,6 @@ for dumping use:
     - Theta Roundness is 2/${BLOCK1}
     - Phi Roundness is 2/${BLOCK2}
     - untoggle Toroidal
-    ( blockiness1/2 correspond to the first and second value for blockiness in the particletemplate/superquadric command )
 3. Add a transform filter to Superquardic
     - rotate  in x axis by 90 (°)
     - scale your particle to your particle size
