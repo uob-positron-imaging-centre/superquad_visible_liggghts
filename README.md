@@ -63,9 +63,9 @@ for dumping use:
 3. Add a transform filter to Superquardic
     - rotate  in x axis by 90 (°)
     - scale your particle to your particle size
-        - x scale is ${RADIUS1}
-        - y scale is ${RADIUS3}
-        - z scale is ${RADIUS2} 
+        - x scale is ${RADIUS1}*2
+        - y scale is ${RADIUS3}*2
+        - z scale is ${RADIUS2}*2
     - if you want to see the overall dimensions of your particle go to the "information" tab. (Bounds, delta for each dimension is the size in m (usually ))
 4. ctrl+ click on dump*.superq.vtk and Superquadric (first dump, than superquadric)
     - apply programmamble filter
